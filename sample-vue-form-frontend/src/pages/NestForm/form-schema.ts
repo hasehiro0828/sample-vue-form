@@ -274,9 +274,11 @@ export const paramSchema = z.union([
 ]);
 
 export const conditionSchema = z.object({
-  title: z.string(),
-  description: z.string(),
   params: z.array(paramSchema).min(1, { message: "少なくとも1つのパラメータが必要です" }),
+  readonly: z.object({
+    title: z.string(),
+    description: z.string(),
+  }),
 });
 
 export const formSchema = z.object({

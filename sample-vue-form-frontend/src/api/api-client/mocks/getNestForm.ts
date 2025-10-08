@@ -10,8 +10,7 @@ const DUMMY_FORM_ARRAY: (Form & { id: string })[] = [
     description: "2023年度の年次報告書を提出するためのフォームです。",
     conditions: [
       {
-        title: "報告期間",
-        description: "報告対象となる期間を指定してください",
+        readonly: { title: "報告期間", description: "報告対象となる期間を指定してください" },
         params: [
           {
             type: "year",
@@ -55,8 +54,7 @@ const DUMMY_FORM_ARRAY: (Form & { id: string })[] = [
         ],
       },
       {
-        title: "報告書情報",
-        description: "提出する報告書の詳細情報",
+        readonly: { title: "報告書情報", description: "提出する報告書の詳細情報" },
         params: [
           {
             type: "text",
@@ -86,8 +84,7 @@ const DUMMY_FORM_ARRAY: (Form & { id: string })[] = [
     description: "新規会員登録のための情報入力フォームです。必要な情報を入力してください。",
     conditions: [
       {
-        title: "基本情報",
-        description: "お客様の基本的な情報を入力してください",
+        readonly: { title: "基本情報", description: "お客様の基本的な情報を入力してください" },
         params: [
           {
             type: "text",
@@ -110,8 +107,7 @@ const DUMMY_FORM_ARRAY: (Form & { id: string })[] = [
         ],
       },
       {
-        title: "契約情報",
-        description: "契約に関する情報を入力してください",
+        readonly: { title: "契約情報", description: "契約に関する情報を入力してください" },
         params: [
           {
             type: "month",
@@ -128,8 +124,7 @@ const DUMMY_FORM_ARRAY: (Form & { id: string })[] = [
         ],
       },
       {
-        title: "オプション情報",
-        description: "追加オプションがあれば入力してください",
+        readonly: { title: "オプション情報", description: "追加オプションがあれば入力してください" },
         params: [
           {
             type: "text",
@@ -147,8 +142,7 @@ const DUMMY_FORM_ARRAY: (Form & { id: string })[] = [
     description: "2024年秋季セミナーへの参加申し込みフォームです。",
     conditions: [
       {
-        title: "参加者情報",
-        description: "参加される方の情報を入力してください",
+        readonly: { title: "参加者情報", description: "参加される方の情報を入力してください" },
         params: [
           {
             type: "text",
@@ -171,8 +165,7 @@ const DUMMY_FORM_ARRAY: (Form & { id: string })[] = [
         ],
       },
       {
-        title: "特別要望",
-        description: "特別な配慮が必要な場合は入力してください",
+        readonly: { title: "特別要望", description: "特別な配慮が必要な場合は入力してください" },
         params: [
           {
             type: "text",
