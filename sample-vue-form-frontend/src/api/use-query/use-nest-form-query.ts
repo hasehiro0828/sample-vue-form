@@ -1,10 +1,17 @@
 import { useQuery } from "@tanstack/vue-query";
-import { apiClient } from "../api-client";
 import type { ComputedRef } from "vue";
+import { apiClient } from "../api-client";
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const useNestFormQuery = (id: ComputedRef<string>) => {
   return useQuery({
     queryKey: ["nestForm", id],
-    queryFn: () => apiClient.getNestForm(id.value),
+    queryFn: async () => {
+      const result = apiClient.getNestForm(id.value);
+      await sleep(300);
+
+      return result;
+    },
   });
 };
