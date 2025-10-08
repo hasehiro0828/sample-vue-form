@@ -39,7 +39,7 @@ const textParamSchema = baseParamSchema
   })
   .refine((data) => !data.required || data.value.text.length > 0, {
     message: "テキストを入力してください",
-    path: ["value"],
+    path: ["value", "text"],
   });
 
 const dateParamSchema = baseParamSchema
