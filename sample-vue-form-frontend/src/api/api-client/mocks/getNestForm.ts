@@ -6,6 +6,82 @@ type Form = z.infer<typeof formSchema>;
 const DUMMY_FORM_ARRAY: (Form & { id: string })[] = [
   {
     id: "1",
+    name: "年次報告書提出フォーム",
+    description: "2023年度の年次報告書を提出するためのフォームです。",
+    conditions: [
+      {
+        title: "報告期間",
+        description: "報告対象となる期間を指定してください",
+        params: [
+          {
+            type: "year",
+            value: { year: "2023" },
+            required: true,
+            readonly: { title: "報告年度", description: "報告対象の年度を選択してください" },
+          },
+          {
+            type: "month",
+            value: { year: "2024", month: "3" },
+            required: true,
+            readonly: { title: "提出期限", description: "報告書の提出期限を入力してください" },
+          },
+          {
+            type: "date_range",
+            value: {
+              from: { year: "2023", month: "4", day: "1" },
+              to: { year: "2024", month: "3", day: "31" },
+            },
+            required: true,
+            readonly: { title: "事業実施期間", description: "事業を実施した期間を入力してください" },
+          },
+          {
+            type: "month_range",
+            value: {
+              from: { year: "2023", month: "4" },
+              to: { year: "2024", month: "3" },
+            },
+            required: false,
+            readonly: { title: "対象期間（月単位）", description: "対象期間を月単位で指定してください" },
+          },
+          {
+            type: "year_range",
+            value: {
+              from: { year: "2020" },
+              to: { year: "2023" },
+            },
+            required: false,
+            readonly: { title: "比較対象年度", description: "比較対象とする年度の範囲を指定してください" },
+          },
+        ],
+      },
+      {
+        title: "報告書情報",
+        description: "提出する報告書の詳細情報",
+        params: [
+          {
+            type: "text",
+            value: { text: "2023年度 事業報告書" },
+            required: true,
+            readonly: { title: "報告書タイトル", description: "報告書のタイトルを入力してください" },
+          },
+          {
+            type: "text",
+            value: { text: "佐藤一郎" },
+            required: true,
+            readonly: { title: "作成者名", description: "報告書の作成者名を入力してください" },
+          },
+          {
+            type: "date",
+            value: { year: "2024", month: "3", day: "31" },
+            required: true,
+            readonly: { title: "作成日", description: "報告書の作成日を入力してください" },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "2",
     name: "会員登録フォーム",
     description: "新規会員登録のための情報入力フォームです。必要な情報を入力してください。",
     conditions: [
@@ -27,7 +103,7 @@ const DUMMY_FORM_ARRAY: (Form & { id: string })[] = [
           },
           {
             type: "date",
-            value: { year: 1990, month: 5, day: 15 },
+            value: { year: "1990", month: "5", day: "15" },
             required: true,
             readonly: { title: "生年月日", description: "生年月日を入力してください" },
           },
@@ -39,7 +115,7 @@ const DUMMY_FORM_ARRAY: (Form & { id: string })[] = [
         params: [
           {
             type: "month",
-            value: { year: 2024, month: 4 },
+            value: { year: "2024", month: "4" },
             required: true,
             readonly: { title: "契約開始月", description: "契約を開始する年月を選択してください" },
           },
@@ -66,7 +142,7 @@ const DUMMY_FORM_ARRAY: (Form & { id: string })[] = [
     ],
   },
   {
-    id: "2",
+    id: "3",
     name: "イベント申し込みフォーム",
     description: "2024年秋季セミナーへの参加申し込みフォームです。",
     conditions: [
@@ -88,7 +164,7 @@ const DUMMY_FORM_ARRAY: (Form & { id: string })[] = [
           },
           {
             type: "date",
-            value: { year: 2024, month: 11, day: 20 },
+            value: { year: "2024", month: "11", day: "20" },
             required: true,
             readonly: { title: "参加希望日", description: "参加を希望する日付を選択してください" },
           },
@@ -109,55 +185,6 @@ const DUMMY_FORM_ARRAY: (Form & { id: string })[] = [
             value: { text: "" },
             required: false,
             readonly: { title: "その他要望", description: "その他のご要望があれば記載してください" },
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "3",
-    name: "年次報告書提出フォーム",
-    description: "2023年度の年次報告書を提出するためのフォームです。",
-    conditions: [
-      {
-        title: "報告期間",
-        description: "報告対象となる期間を指定してください",
-        params: [
-          {
-            type: "year",
-            value: { year: 2023 },
-            required: true,
-            readonly: { title: "報告年度", description: "報告対象の年度を選択してください" },
-          },
-          {
-            type: "month",
-            value: { year: 2024, month: 3 },
-            required: true,
-            readonly: { title: "提出期限", description: "報告書の提出期限を入力してください" },
-          },
-        ],
-      },
-      {
-        title: "報告書情報",
-        description: "提出する報告書の詳細情報",
-        params: [
-          {
-            type: "text",
-            value: { text: "2023年度 事業報告書" },
-            required: true,
-            readonly: { title: "報告書タイトル", description: "報告書のタイトルを入力してください" },
-          },
-          {
-            type: "text",
-            value: { text: "佐藤一郎" },
-            required: true,
-            readonly: { title: "作成者名", description: "報告書の作成者名を入力してください" },
-          },
-          {
-            type: "date",
-            value: { year: 2024, month: 3, day: 31 },
-            required: true,
-            readonly: { title: "作成日", description: "報告書の作成日を入力してください" },
           },
         ],
       },
