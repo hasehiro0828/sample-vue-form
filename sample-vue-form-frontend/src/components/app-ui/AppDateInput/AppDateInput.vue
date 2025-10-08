@@ -5,13 +5,13 @@ import { ref, useId } from "vue";
 const props = defineProps<{
   type: "date" | "month" | "year";
   yearError: boolean;
-  monthError: boolean;
-  dayError: boolean;
+  monthError?: boolean;
+  dayError?: boolean;
 }>();
 
 const yearModel = defineModel<string>("year", { required: true });
-const monthModel = defineModel<string>("month", { required: true });
-const dayModel = defineModel<string>("day", { required: true });
+const monthModel = defineModel<string>("month");
+const dayModel = defineModel<string>("day");
 
 const emit = defineEmits<{
   "blur:year": [event: FocusEvent];
