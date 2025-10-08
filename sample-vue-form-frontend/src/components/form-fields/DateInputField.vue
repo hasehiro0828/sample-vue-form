@@ -18,6 +18,12 @@ const dayField = useField<string>(`${props.namePrefix}.day`);
 const rootErrorMessage = computed(() => errors.value[props.namePrefix]);
 
 const shouldShowRootError = computed(() => {
+  const hasAnyFieldError = [!yearField.meta.valid, !monthField.meta.valid, !dayField.meta.valid].some(
+    (hasError) => hasError
+  );
+
+  if (hasAnyFieldError) return false;
+
   return (
     [yearField.meta, monthField.meta, dayField.meta].some((meta) =>
       satisfiesErrorDisplayCondition(submitCount.value, meta)

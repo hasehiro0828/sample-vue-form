@@ -21,6 +21,17 @@ const toDayField = useField<string>(`${props.namePrefix}.to.day`);
 const rootErrorMessage = computed(() => errors.value[props.namePrefix]);
 
 const shouldShowRootError = computed(() => {
+  const hasAnyFieldError = [
+    !fromYearField.meta.valid,
+    !fromMonthField.meta.valid,
+    !fromDayField.meta.valid,
+    !toYearField.meta.valid,
+    !toMonthField.meta.valid,
+    !toDayField.meta.valid,
+  ].some((hasError) => hasError);
+
+  if (hasAnyFieldError) return false;
+
   return (
     [
       fromYearField.meta,
