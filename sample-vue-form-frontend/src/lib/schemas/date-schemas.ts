@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isValidDate } from "@/lib/date-utils";
 
 export const DATE_CONFIG = {
   year: { min: 1900, max: 2100 },
@@ -36,11 +37,15 @@ export const zodDay = z
     message: `日は${DATE_CONFIG.day.max}以下で入力してください`,
   });
 
-export const zodDateValue = z.object({
-  year: zodYear,
-  month: zodMonth,
-  day: zodDay,
-});
+export const zodDateValue = z
+  .object({
+    year: zodYear,
+    month: zodMonth,
+    day: zodDay,
+  })
+  .refine((val) => val.year === "" || val.month === "" || val.day === "" || isValidDate(val), {
+    message: "有効な日付を入力してください",
+  });
 
 export const zodMonthValue = z.object({
   year: zodYear,
