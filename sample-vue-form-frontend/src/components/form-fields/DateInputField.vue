@@ -2,7 +2,7 @@
 import { useField, useFormContext } from "vee-validate";
 import AppDateInput from "@/components/app-ui/AppDateInput/AppDateInput.vue";
 import { computed } from "vue";
-import { shouldShowError } from "./utils";
+import { satisfiesErrorDisplayCondition } from "./utils";
 
 const props = defineProps<{
   namePrefix: string;
@@ -18,8 +18,10 @@ const dayField = useField<string>(`${props.namePrefix}.day`);
 const rootErrorMessage = computed(() => errors.value[props.namePrefix]);
 
 const shouldShowRootError = computed(() => {
-  return [yearField.meta, monthField.meta, dayField.meta].some((meta) =>
-    shouldShowError(submitCount.value, meta, rootErrorMessage.value)
+  return (
+    [yearField.meta, monthField.meta, dayField.meta].some((meta) =>
+      satisfiesErrorDisplayCondition(submitCount.value, meta)
+    ) && !!rootErrorMessage.value
   );
 });
 
@@ -35,9 +37,9 @@ const handleRootBlur = (e: FocusEvent, blurs: ((event: FocusEvent) => void)[]) =
       v-model:month="monthField.value.value"
       v-model:day="dayField.value.value"
       :type="props.type"
-      :year-error="shouldShowError(submitCount, yearField.meta, yearField.errorMessage.value)"
-      :month-error="shouldShowError(submitCount, monthField.meta, monthField.errorMessage.value)"
-      :day-error="shouldShowError(submitCount, dayField.meta, dayField.errorMessage.value)"
+      :year-error="satisfiesErrorDisplayCondition(submitCount, yearField.meta) && !!yearField.errorMessage.value"
+      :month-error="satisfiesErrorDisplayCondition(submitCount, monthField.meta) && !!monthField.errorMessage.value"
+      :day-error="satisfiesErrorDisplayCondition(submitCount, dayField.meta) && !!dayField.errorMessage.value"
       @update:year="yearField.handleChange"
       @update:month="monthField.handleChange"
       @update:day="dayField.handleChange"
@@ -52,13 +54,13 @@ const handleRootBlur = (e: FocusEvent, blurs: ((event: FocusEvent) => void)[]) =
         {{ rootErrorMessage }}
       </p>
       <template v-else>
-        <p v-if="shouldShowError(submitCount, yearField.meta, yearField.errorMessage.value)">
+        <p v-if="satisfiesErrorDisplayCondition(submitCount, yearField.meta) && yearField.errorMessage.value">
           {{ yearField.errorMessage.value }}
         </p>
-        <p v-else-if="shouldShowError(submitCount, monthField.meta, monthField.errorMessage.value)">
+        <p v-else-if="satisfiesErrorDisplayCondition(submitCount, monthField.meta) && monthField.errorMessage.value">
           {{ monthField.errorMessage.value }}
         </p>
-        <p v-else-if="shouldShowError(submitCount, dayField.meta, dayField.errorMessage.value)">
+        <p v-else-if="satisfiesErrorDisplayCondition(submitCount, dayField.meta) && dayField.errorMessage.value">
           {{ dayField.errorMessage.value }}
         </p>
       </template>

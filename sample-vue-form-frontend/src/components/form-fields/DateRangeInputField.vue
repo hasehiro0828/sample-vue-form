@@ -2,7 +2,7 @@
 import { useField, useFormContext } from "vee-validate";
 import AppDateInput from "@/components/app-ui/AppDateInput/AppDateInput.vue";
 import { computed } from "vue";
-import { shouldShowError } from "./utils";
+import { satisfiesErrorDisplayCondition } from "./utils";
 
 const props = defineProps<{
   namePrefix: string;
@@ -21,14 +21,16 @@ const toDayField = useField<string>(`${props.namePrefix}.to.day`);
 const rootErrorMessage = computed(() => errors.value[props.namePrefix]);
 
 const shouldShowRootError = computed(() => {
-  return [
-    fromYearField.meta,
-    fromMonthField.meta,
-    fromDayField.meta,
-    toYearField.meta,
-    toMonthField.meta,
-    toDayField.meta,
-  ].some((meta) => shouldShowError(submitCount.value, meta, rootErrorMessage.value));
+  return (
+    [
+      fromYearField.meta,
+      fromMonthField.meta,
+      fromDayField.meta,
+      toYearField.meta,
+      toMonthField.meta,
+      toDayField.meta,
+    ].some((meta) => satisfiesErrorDisplayCondition(submitCount.value, meta)) && !!rootErrorMessage.value
+  );
 });
 
 const handleRootBlur = (e: FocusEvent, blurs: ((event: FocusEvent) => void)[]) => {
@@ -46,9 +48,15 @@ const handleRootBlur = (e: FocusEvent, blurs: ((event: FocusEvent) => void)[]) =
           v-model:month="fromMonthField.value.value"
           v-model:day="fromDayField.value.value"
           :type="props.type"
-          :year-error="shouldShowError(submitCount, fromYearField.meta, fromYearField.errorMessage.value)"
-          :month-error="shouldShowError(submitCount, fromMonthField.meta, fromMonthField.errorMessage.value)"
-          :day-error="shouldShowError(submitCount, fromDayField.meta, fromDayField.errorMessage.value)"
+          :year-error="
+            satisfiesErrorDisplayCondition(submitCount, fromYearField.meta) && !!fromYearField.errorMessage.value
+          "
+          :month-error="
+            satisfiesErrorDisplayCondition(submitCount, fromMonthField.meta) && !!fromMonthField.errorMessage.value
+          "
+          :day-error="
+            satisfiesErrorDisplayCondition(submitCount, fromDayField.meta) && !!fromDayField.errorMessage.value
+          "
           @update:year="fromYearField.handleChange"
           @update:month="fromMonthField.handleChange"
           @update:day="fromDayField.handleChange"
@@ -60,13 +68,23 @@ const handleRootBlur = (e: FocusEvent, blurs: ((event: FocusEvent) => void)[]) =
           "
         />
         <div v-if="!shouldShowRootError" class="text-sm text-red-600">
-          <p v-if="shouldShowError(submitCount, fromYearField.meta, fromYearField.errorMessage.value)">
+          <p
+            v-if="satisfiesErrorDisplayCondition(submitCount, fromYearField.meta) && !!fromYearField.errorMessage.value"
+          >
             {{ fromYearField.errorMessage.value }}
           </p>
-          <p v-else-if="shouldShowError(submitCount, fromMonthField.meta, fromMonthField.errorMessage.value)">
+          <p
+            v-else-if="
+              satisfiesErrorDisplayCondition(submitCount, fromMonthField.meta) && !!fromMonthField.errorMessage.value
+            "
+          >
             {{ fromMonthField.errorMessage.value }}
           </p>
-          <p v-else-if="shouldShowError(submitCount, fromDayField.meta, fromDayField.errorMessage.value)">
+          <p
+            v-else-if="
+              satisfiesErrorDisplayCondition(submitCount, fromDayField.meta) && !!fromDayField.errorMessage.value
+            "
+          >
             {{ fromDayField.errorMessage.value }}
           </p>
         </div>
@@ -81,9 +99,13 @@ const handleRootBlur = (e: FocusEvent, blurs: ((event: FocusEvent) => void)[]) =
           v-model:month="toMonthField.value.value"
           v-model:day="toDayField.value.value"
           :type="props.type"
-          :year-error="shouldShowError(submitCount, toYearField.meta, toYearField.errorMessage.value)"
-          :month-error="shouldShowError(submitCount, toMonthField.meta, toMonthField.errorMessage.value)"
-          :day-error="shouldShowError(submitCount, toDayField.meta, toDayField.errorMessage.value)"
+          :year-error="
+            satisfiesErrorDisplayCondition(submitCount, toYearField.meta) && !!toYearField.errorMessage.value
+          "
+          :month-error="
+            satisfiesErrorDisplayCondition(submitCount, toMonthField.meta) && !!toMonthField.errorMessage.value
+          "
+          :day-error="satisfiesErrorDisplayCondition(submitCount, toDayField.meta) && !!toDayField.errorMessage.value"
           @update:year="toYearField.handleChange"
           @update:month="toMonthField.handleChange"
           @update:day="toDayField.handleChange"
@@ -95,13 +117,19 @@ const handleRootBlur = (e: FocusEvent, blurs: ((event: FocusEvent) => void)[]) =
           "
         />
         <div v-if="!shouldShowRootError" class="text-sm text-red-600">
-          <p v-if="shouldShowError(submitCount, toYearField.meta, toYearField.errorMessage.value)">
+          <p v-if="satisfiesErrorDisplayCondition(submitCount, toYearField.meta) && !!toYearField.errorMessage.value">
             {{ toYearField.errorMessage.value }}
           </p>
-          <p v-else-if="shouldShowError(submitCount, toMonthField.meta, toMonthField.errorMessage.value)">
+          <p
+            v-else-if="
+              satisfiesErrorDisplayCondition(submitCount, toMonthField.meta) && !!toMonthField.errorMessage.value
+            "
+          >
             {{ toMonthField.errorMessage.value }}
           </p>
-          <p v-else-if="shouldShowError(submitCount, toDayField.meta, toDayField.errorMessage.value)">
+          <p
+            v-else-if="satisfiesErrorDisplayCondition(submitCount, toDayField.meta) && !!toDayField.errorMessage.value"
+          >
             {{ toDayField.errorMessage.value }}
           </p>
         </div>
